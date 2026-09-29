@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Susy MELI — Portfolio</title>
+<meta name="description" content="Susy MELI — Ingénieure logicielle & UI/UX designer freelance à Yaoundé, Cameroun.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#040405;
+    --bg-soft:#0a0a0d;
+    --text:#eceef2;
+    --muted:#8a8a95;
+    --accent:#ff2a55;
+    --accent-2:#ff7a2a;
+    --accent-3:#7a5cff;
+    --glow: rgba(255,42,85,.45);
+    --card: rgba(255,255,255,.035);
+    --card-strong: rgba(255,255,255,.06);
+    --border: rgba(255,255,255,.09);
+    --grad: linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 55%,#ffb347 100%);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Poppins',sans-serif;
+    line-height:1.7;
+    overflow-x:hidden;
+    cursor:default;
+  }
+  ::selection{background:var(--accent);color:#fff;}
+  h1,h2,h3,.logo,.stat-num{font-family:'Space Grotesk',sans-serif;}
+
+  a{color:inherit;}
+
+  .grain{
+    position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.035;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .cursor-glow{
+    position:fixed;width:420px;height:420px;border-radius:50%;
+    background:radial-gradient(circle, var(--glow) 0%, transparent 70%);
+    pointer-events:none;z-index:1;top:0;left:0;
+    transform:translate(-50%,-50%);
+    transition:opacity .3s ease;
+    opacity:0;
+    filter:blur(10px);
+  }
+  @media (pointer:fine){.cursor-glow{opacity:.7;}}
+
+  .bg-blobs{position:fixed;inset:0;z-index:-2;overflow:hidden;}
+  .blob{position:absolute;border-radius:50%;filter:blur(120px);}
+  .b1{width:520px;height:520px;top:-15%;left:-12%;background:var(--accent);opacity:.28;animation:float1 22s ease-in-out infinite;}
+  .b2{width:420px;height:420px;bottom:-15%;right:-10%;background:var(--accent-3);opacity:.22;animation:float2 26s ease-in-out infinite;}
+  .b3{width:300px;height:300px;top:40%;left:55%;background:var(--accent-2);opacity:.15;animation:float3 20s ease-in-out infinite;}
+  @keyframes float1{0%,100%{transform:translate(0,0);}50%{transform:translate(60px,80px);}}
+  @keyframes float2{0%,100%{transform:translate(0,0);}50%{transform:translate(-50px,-70px);}}
+  @keyframes float3{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-40px,40px) scale(1.15);}}
+
+  .noise-grid{position:fixed;inset:0;z-index:-1;
+    background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+    background-size:64px 64px;mask-image:radial-gradient(ellipse 80% 60% at 50% 20%, black, transparent 75%);
+  }
+
+  /* NAV */
+  nav{
+    position:fixed;top:0;left:0;width:100%;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:20px 48px;
+    background:rgba(4,4,5,.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    border-bottom:1px solid rgba(255,255,255,.06);
+    gap:20px;
+  }
+  .logo{font-weight:700;font-size:1.15rem;letter-spacing:.5px;}
+  .logo span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .nav-links{display:flex;gap:36px;list-style:none;}
+  .nav-links a{
+    text-decoration:none;color:#c9c9d1;font-size:.88rem;font-weight:500;letter-spacing:.3px;
+    position:relative;padding-bottom:4px;transition:color .3s ease;
+  }
+  .nav-links a::after{
+    content:'';position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--grad);transition:width .3s ease;
+  }
+  .nav-links a:hover{color:#fff;}
+  .nav-links a:hover::after{width:100%;}
+  .nav-right{display:flex;align-items:center;gap:16px;}
+  .nav-cta{
+    background:var(--grad);color:#fff!important;padding:10px 22px;border-radius:30px;
+    font-size:.85rem;font-weight:600;text-decoration:none;white-space:nowrap;
+  }
+  .lang-switch{
+    display:flex;align-items:center;background:rgba(255,255,255,.05);border:1px solid var(--border);
+    border-radius:30px;padding:3px;font-size:.78rem;font-weight:600;
+  }
+  .lang-switch button{
+    background:none;border:none;color:#999;padding:6px 12px;border-radius:24px;cursor:pointer;
+    font-family:inherit;font-size:.78rem;font-weight:600;transition:all .25s ease;
+  }
+  .lang-switch button.active{background:var(--grad);color:#fff;}
+  .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:8px;}
+  .burger span{width:24px;height:2px;background:#fff;display:block;transition:.3s;}
+  .mobile-menu{
+    position:fixed;top:0;right:-100%;width:75%;max-width:320px;height:100vh;
+    background:#0a0a0d;border-left:1px solid var(--border);z-index:200;
+    display:flex;flex-direction:column;gap:28px;padding:100px 36px;transition:right .4s ease;
+  }
+  .mobile-menu.open{right:0;}
+  .mobile-menu a{text-decoration:none;color:#eee;font-size:1.1rem;font-weight:500;}
+  .menu-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:150;opacity:0;pointer-events:none;transition:opacity .3s ease;}
+  .menu-overlay.open{opacity:1;pointer-events:auto;}
+  @media (max-width:860px){.nav-links{display:none;}.burger{display:flex;}}
+
+  /* HERO */
+  header{
+    min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
+    text-align:center;padding:140px 20px 60px;position:relative;
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    background:rgba(255,42,85,.08);color:var(--accent);
+    padding:9px 18px;border-radius:30px;font-size:.78rem;font-weight:600;letter-spacing:1.5px;
+    text-transform:uppercase;margin-bottom:28px;border:1px solid rgba(255,42,85,.35);
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);animation:pulse 1.6s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+
+  h1{
+    font-size:clamp(2.8rem,8vw,6rem);font-weight:800;line-height:1.02;letter-spacing:-3px;margin-bottom:22px;
+  }
+  h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200% 200%;animation:gradShift 6s ease infinite;}
+  @keyframes gradShift{0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
+
+  .role-line{
+    font-size:clamp(1.05rem,2.4vw,1.5rem);color:#c4c4cd;font-weight:400;margin-bottom:18px;
+    min-height:1.6em;
+  }
+  .role-line .typed{color:var(--accent);font-weight:600;}
+  .cursor-blink{display:inline-block;width:2px;background:var(--accent);margin-left:2px;animation:blink 1s step-end infinite;}
+  @keyframes blink{50%{opacity:0;}}
+
+  .subtitle{font-size:1.05rem;color:var(--muted);max-width:620px;margin:0 auto 44px;font-weight:300;}
+
+  .hero-actions{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin-bottom:70px;}
+  .btn{
+    position:relative;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    background:var(--grad);color:#fff;padding:16px 36px;border-radius:10px;text-decoration:none;
+    font-weight:600;font-size:1rem;overflow:hidden;isolation:isolate;
+    box-shadow:0 8px 30px rgba(255,42,85,.35);border:1px solid transparent;
+    transition:transform .3s ease, box-shadow .3s ease;
+  }
+  .btn:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(255,42,85,.5);}
+  .btn-outline{
+    display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,.03);
+    color:var(--text);padding:15px 34px;border-radius:10px;text-decoration:none;font-weight:600;font-size:1rem;
+    border:1px solid var(--border);transition:all .3s ease;
+  }
+  .btn-outline:hover{border-color:var(--accent);color:var(--accent);background:rgba(255,42,85,.06);}
+
+  .stats-row{display:flex;gap:50px;flex-wrap:wrap;justify-content:center;}
+  .stat{text-align:center;}
+  .stat-num{font-size:2.2rem;font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .stat-label{font-size:.78rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:4px;}
+
+  .scroll-cue{position:absolute;bottom:36px;display:flex;flex-direction:column;align-items:center;gap:8px;color:#666;}
+  .mouse{width:24px;height:38px;border:2px solid #555;border-radius:14px;position:relative;}
+  .mouse::before{content:'';position:absolute;top:6px;left:50%;width:3px;height:8px;background:var(--accent);
+    border-radius:2px;transform:translateX(-50%);animation:scrollDot 1.6s ease infinite;}
+  @keyframes scrollDot{0%{opacity:1;top:6px;}100%{opacity:0;top:18px;}}
+
+  /* SECTIONS */
+  section{padding:130px 20px;max-width:1080px;margin:0 auto;position:relative;}
+  .section-tag{
+    display:inline-block;font-size:.78rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+    color:var(--accent);margin-bottom:14px;
+  }
+  h2{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:700;margin-bottom:50px;letter-spacing:-1px;}
+
+  .reveal{opacity:0;transform:translateY(36px);transition:opacity .8s ease, transform .8s ease;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+
+  .glass-card{
+    background:var(--card);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border:1px solid var(--border);border-radius:20px;padding:44px;
+    transition:transform .4s ease, box-shadow .4s ease, border-color .4s ease;
+  }
+  .glass-card:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.5);border-color:rgba(255,42,85,.28);}
+
+  .about-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:28px;}
+  @media(max-width:760px){.about-grid{grid-template-columns:1fr;}}
+  .about-facts{display:flex;flex-direction:column;gap:18px;justify-content:center;}
+  .fact{display:flex;gap:14px;align-items:flex-start;}
+  .fact-icon{
+    width:38px;height:38px;flex-shrink:0;border-radius:10px;background:rgba(255,42,85,.1);
+    display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:1.1rem;
+  }
+  .fact-text b{display:block;font-size:.92rem;color:#fff;}
+  .fact-text span{font-size:.82rem;color:var(--muted);}
+
+  .marquee-wrap{overflow:hidden;padding:26px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin:0 0 40px;}
+  .marquee{display:flex;gap:60px;width:max-content;animation:scroll 26s linear infinite;}
+  .marquee span{font-size:1.3rem;font-weight:600;color:var(--muted);white-space:nowrap;display:flex;align-items:center;gap:16px;}
+  .marquee span::after{content:'✦';color:var(--accent);font-size:.9rem;}
+  @keyframes scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+  .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:28px;}
+  .project-card{
+    position:relative;background:var(--card);border:1px solid var(--border);border-radius:20px;
+    padding:34px;display:flex;flex-direction:column;overflow:hidden;
+    transition:transform .35s ease, border-color .35s ease;
+    transform-style:preserve-3d;
+  }
+  .project-card::before{
+    content:'';position:absolute;inset:0;border-radius:20px;padding:1px;
+    background:var(--grad);opacity:0;transition:opacity .35s ease;
+    -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;
+  }
+  .project-card:hover{border-color:transparent;transform:translateY(-8px);}
+  .project-card:hover::before{opacity:1;}
+  .project-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px;}
+  .project-icon{
+    width:46px;height:46px;border-radius:12px;background:var(--grad);display:flex;align-items:center;
+    justify-content:center;font-weight:700;font-size:1.1rem;color:#fff;flex-shrink:0;
+  }
+  .project-title{font-size:1.25rem;font-weight:600;color:#fff;margin-bottom:2px;}
+  .project-role{font-size:.76rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:600;}
+  .project-desc{color:#b6b6bf;font-size:.93rem;line-height:1.65;flex:1;margin:14px 0 18px;}
+  .project-tags{display:flex;flex-wrap:wrap;gap:8px;}
+  .project-tech{
+    background:rgba(255,255,255,.04);color:#d6d6de;padding:5px 13px;border-radius:20px;
+    font-size:.74rem;font-weight:600;border:1px solid var(--border);
+  }
+
+  .timeline{position:relative;padding-left:34px;}
+  .timeline::before{content:'';position:absolute;left:5px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--accent),transparent);}
+  .timeline-item{position:relative;margin-bottom:44px;}
+  .timeline-item:last-child{margin-bottom:0;}
+  .timeline-item::before{
+    content:'';position:absolute;left:-34px;top:5px;width:13px;height:13px;border-radius:50%;
+    background:var(--bg);border:2px solid var(--accent);box-shadow:0 0 12px var(--glow);
+  }
+  .timeline-date{color:var(--accent);font-size:.85rem;font-weight:600;display:block;margin-bottom:6px;letter-spacing:.5px;}
+  .timeline-title{font-size:1.25rem;font-weight:600;color:#fff;}
+  .timeline-company{color:#8a8a95;font-size:.95rem;margin-bottom:10px;}
+
+  .skill-category{font-size:.82rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);
+    margin:36px 0 16px;font-weight:600;}
+  .skill-category:first-child{margin-top:0;}
+  .skills-grid{display:flex;flex-wrap:wrap;gap:14px;}
+  .skill-item{
+    background:rgba(255,255,255,.03);border:1px solid var(--border);padding:14px 24px;border-radius:14px;
+    font-weight:600;font-size:.9rem;transition:all .3s ease;cursor:default;
+  }
+  .skill-item:hover{background:rgba(255,42,85,.08);border-color:var(--accent);color:#fff;transform:translateY(-3px);}
+
+  .community-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:22px;}
+  .community-item{
+    background:rgba(255,255,255,.03);border:1px solid var(--border);padding:26px;border-radius:16px;
+    transition:.3s ease;
+  }
+  .community-item:hover{border-color:rgba(255,42,85,.3);background:rgba(255,42,85,.04);}
+  .community-item h3{font-size:1.05rem;color:#fff;margin-bottom:8px;}
+  .community-item p{font-size:.88rem;color:var(--muted);}
+
+  .contact-card{
+    text-align:center;background:var(--card);border:1px solid var(--border);border-radius:28px;
+    padding:70px 40px;position:relative;overflow:hidden;
+  }
+  .contact-card::before{
+    content:'';position:absolute;width:400px;height:400px;background:var(--grad);opacity:.14;
+    filter:blur(100px);top:-100px;left:50%;transform:translateX(-50%);
+  }
+  .contact-card h2{justify-content:center;}
+  .contact-card p{color:#b0b0b8;max-width:480px;margin:0 auto 34px;position:relative;}
+
+  footer{text-align:center;padding:44px 20px;border-top:1px solid var(--border);color:#555;font-size:.86rem;}
+  .footer-links{display:flex;justify-content:center;gap:22px;margin-bottom:18px;}
+  .footer-links a{color:#888;text-decoration:none;font-size:.85rem;transition:color .3s ease;}
+  .footer-links a:hover{color:var(--accent);}
+
+  @media (max-width:768px){
+    section{padding:80px 20px;}
+    .about-grid{gap:20px;}
+    .stats-row{gap:30px;}
+    nav{padding:16px 20px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+<div class="cursor-glow" id="cursorGlow"></div>
+<div class="bg-blobs"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<div class="noise-grid"></div>
+
+<nav>
+  <div class="logo">MELI <span>Susy</span></div>
+  <ul class="nav-links">
+    <li><a href="#about" data-fr="Profil" data-en="About">Profil</a></li>
+    <li><a href="#projects" data-fr="Projets" data-en="Projects">Projets</a></li>
+    <li><a href="#experience" data-fr="Parcours" data-en="Experience">Parcours</a></li>
+    <li><a href="#skills" data-fr="Compétences" data-en="Skills">Compétences</a></li>
+    <li><a href="#community" data-fr="Communauté" data-en="Community">Communauté</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="lang-switch">
+      <button id="langFr" class="active" type="button">FR</button>
+      <button id="langEn" type="button">EN</button>
+    </div>
+    <a href="#contact" class="nav-cta" data-fr="Me contacter" data-en="Contact me">Me contacter</a>
+    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="menu-overlay" id="overlay"></div>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" data-fr="Profil" data-en="About">Profil</a>
+  <a href="#projects" data-fr="Projets" data-en="Projects">Projets</a>
+  <a href="#experience" data-fr="Parcours" data-en="Experience">Parcours</a>
+  <a href="#skills" data-fr="Compétences" data-en="Skills">Compétences</a>
+  <a href="#community" data-fr="Communauté" data-en="Community">Communauté</a>
+  <a href="#contact" data-fr="Contact" data-en="Contact">Contact</a>
+</div>
+
+<header>
+  <div class="eyebrow"><span class="dot"></span><span data-fr="Disponible pour missions freelance" data-en="Available for freelance work">Disponible pour missions freelance</span></div>
+  <h1>MELI <span class="grad">Susy</span></h1>
+  <p class="role-line"><span data-fr="Je suis" data-en="I'm a">Je suis</span> <span class="typed" id="typed"></span><span class="cursor-blink">&nbsp;</span></p>
+  <p class="subtitle" data-fr="Basée à Yaoundé, Cameroun — je conçois et développe des produits web & mobiles complets, du prototype à la mise en production, avec une exigence de design et de fiabilité." data-en="Based in Yaoundé, Cameroon — I design and build complete web & mobile products, from prototype to production, with an emphasis on design quality and reliability.">Basée à Yaoundé, Cameroun — je conçois et développe des produits web & mobiles complets, du prototype à la mise en production, avec une exigence de design et de fiabilité.</p>
+  <div class="hero-actions">
+    <a href="#projects" class="btn" data-fr="Voir mes projets ↓" data-en="See my projects ↓">Voir mes projets ↓</a>
+    <a href="#contact" class="btn-outline" data-fr="Me contacter" data-en="Contact me">Me contacter</a>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num" data-count="8">0</div><div class="stat-label" data-fr="Projets" data-en="Projects">Projets</div></div>
+    <div class="stat"><div class="stat-num" data-count="3">0</div><div class="stat-label" data-fr="Stages / Collabs" data-en="Internships / Collabs">Stages / Collabs</div></div>
+    <div class="stat"><div class="stat-num" data-count="4">0</div><div class="stat-label" data-fr="Hackathons" data-en="Hackathons">Hackathons</div></div>
+  </div>
+  <div class="scroll-cue"><div class="mouse"></div><span style="font-size:.72rem;letter-spacing:2px;">SCROLL</span></div>
+</header>
+
+<div class="marquee-wrap reveal">
+  <div class="marquee">
+    <span>Flutter</span><span>Next.js</span><span>Spring Boot</span><span>Firebase</span><span>Figma</span><span>Node.js</span><span>MySQL</span><span>UI/UX Design</span>
+    <span>Flutter</span><span>Next.js</span><span>Spring Boot</span><span>Firebase</span><span>Figma</span><span>Node.js</span><span>MySQL</span><span>UI/UX Design</span>
+  </div>
+</div>
+
+<section id="about">
+  <span class="section-tag reveal" data-fr="À propos" data-en="About">À propos</span>
+  <h2 class="reveal" data-fr="Profil" data-en="Profile">Profil</h2>
+  <div class="about-grid">
+    <div class="glass-card reveal">
+      <p data-html="true"
+        data-fr="Passionnée par la technologie et la création d'expériences utilisateur impactantes, j'évolue à la croisée du développement logiciel et du design d'interface. Développeuse freelance, je conçois des applications web et mobiles complètes — du prototype à la mise en production — pour des clients et projets personnels. Toujours en quête d'innovation, je combine mon expertise technique avec mes passions créatives (<strong>bricolage</strong>, <strong>robotique</strong> et <strong>dessin</strong>) pour concevoir des solutions à la fois esthétiques, intuitives et fonctionnelles."
+        data-en="Passionate about technology and building experiences that genuinely matter to users, I work at the crossroads of software development and interface design. As a freelance developer, I build complete web and mobile applications — from prototype to production — for clients and personal projects. Always looking for new ideas, I combine my technical expertise with creative passions (<strong>DIY</strong>, <strong>robotics</strong> and <strong>drawing</strong>) to design solutions that are both beautiful, intuitive and functional.">
+        Passionnée par la technologie et la création d'expériences utilisateur impactantes, j'évolue à la croisée du développement logiciel et du design d'interface. Développeuse freelance, je conçois des applications web et mobiles complètes — du prototype à la mise en production — pour des clients et projets personnels. Toujours en quête d'innovation, je combine mon expertise technique avec mes passions créatives (<strong>bricolage</strong>, <strong>robotique</strong> et <strong>dessin</strong>) pour concevoir des solutions à la fois esthétiques, intuitives et fonctionnelles.
+      </p>
+    </div>
+    <div class="about-facts reveal">
+      <div class="fact"><div class="fact-icon">🎓</div><div class="fact-text">
+        <b data-fr="Université de Yaoundé I" data-en="University of Yaoundé I">Université de Yaoundé I</b>
+        <span data-fr="Licence Professionnelle en Génie Logiciel" data-en="Professional Bachelor's in Software Engineering">Licence Professionnelle en Génie Logiciel</span>
+      </div></div>
+      <div class="fact"><div class="fact-icon">📍</div><div class="fact-text">
+        <b data-fr="Yaoundé, Cameroun" data-en="Yaoundé, Cameroon">Yaoundé, Cameroun</b>
+        <span data-fr="Disponible en remote & sur site" data-en="Available remote & on-site">Disponible en remote & sur site</span>
+      </div></div>
+      <div class="fact"><div class="fact-icon">💼</div><div class="fact-text">
+        <b data-fr="Freelance" data-en="Freelance">Freelance</b>
+        <span data-fr="Développement web, mobile & UI/UX" data-en="Web, mobile & UI/UX development">Développement web, mobile & UI/UX</span>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <span class="section-tag reveal" data-fr="Réalisations" data-en="Work">Réalisations</span>
+  <h2 class="reveal" data-fr="Mes Projets" data-en="My Projects">Mes Projets</h2>
+  <div class="projects-grid">
+
+    <div class="project-card reveal">
+      <div class="project-top">
+        <div><div class="project-title">Brixel</div>
+          <div class="project-role" data-fr="Projet de fin d'études" data-en="Final-year project">Projet de fin d'études</div></div>
+        <div class="project-icon">Bx</div>
+      </div>
+      <p class="project-desc"
+        data-fr="Plateforme full-stack de comparaison de prix et e-commerce pour les matériaux de construction : web Next.js, mobile Flutter, backend Java/Spring Boot, MySQL, auth Firebase, paiement mobile money et géolocalisation."
+        data-en="Full-stack price comparison and e-commerce platform for construction materials: Next.js web, Flutter mobile, Java/Spring Boot backend, MySQL, Firebase auth, mobile money payment and geolocation.">
+        Plateforme full-stack de comparaison de prix et e-commerce pour les matériaux de construction : web Next.js, mobile Flutter, backend Java/Spring Boot, MySQL, auth Firebase, paiement mobile money et géolocalisation.
+      </p>
+      <div class="project-tags"><span class="project-tech">Next.js</span><span class="project-tech">Flutter</span><span class="project-tech">Spring Boot</span></div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-top">
+        <div><div class="project-title">OptBarber</div>
+          <div class="project-role" data-fr="Projet personnel" data-en="Personal project">Projet personnel</div></div>
+        <div class="project-icon">Ob</div>
+      </div>
+      <p class="project-desc"
+        data-fr="Application de gestion de salons de coiffure pour plusieurs clients freelance, réservation intelligente des créneaux, catalogue de services et esthétique premium noir & or."
+        data-en="Barbershop management app for multiple freelance clients, with smart booking slots, a service catalogue and a premium black & gold look.">
+        Application de gestion de salons de coiffure pour plusieurs clients freelance, réservation intelligente des créneaux, catalogue de services et esthétique premium noir & or.
+      </p>
+      <div class="project-tags"><span class="project-tech">Flutter</span><span class="project-tech">Firebase</span></div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-top">
+        <div><div class="project-title">Ets Gambo</div>
+          <div class="project-role" data-fr="Projet freelance client" data-en="Freelance client project">Projet freelance client</div></div>
+        <div class="project-icon">Eg</div>
+      </div>
+      <p class="project-desc"
+        data-fr="Application desktop de gestion pour une boutique d'alimentation : entrées/sorties de stock, facturation, tableau de bord avec graphiques d'activité, installation locale sans abonnement."
+        data-en="Desktop management app for a grocery shop: stock in/out tracking, invoicing, an activity dashboard with charts, installed locally with no subscription.">
+        Application desktop de gestion pour une boutique d'alimentation : entrées/sorties de stock, facturation, tableau de bord avec graphiques d'activité, installation locale sans abonnement.
+      </p>
+      <div class="project-tags"><span class="project-tech">Electron</span><span class="project-tech">SQLite</span></div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-top">
+        <div><div class="project-title">Nutrify</div>
+          <div class="project-role" data-fr="Projet personnel" data-en="Personal project">Projet personnel</div></div>
+        <div class="project-icon">Nu</div>
+      </div>
+      <p class="project-desc"
+        data-fr="Application mobile de gestion alimentaire intuitive, pensée pour accompagner les utilisateurs dans le suivi et l'optimisation de leur nutrition au quotidien."
+        data-en="Intuitive mobile food-management app, designed to help users track and improve their daily nutrition.">
+        Application mobile de gestion alimentaire intuitive, pensée pour accompagner les utilisateurs dans le suivi et l'optimisation de leur nutrition au quotidien.
+      </p>
+      <div class="project-tags"><span class="project-tech">Flutter</span></div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-top">
+        <div><div class="project-title">ShareX</div>
+          <div class="project-role" data-fr="Projet personnel" data-en="Personal project">Projet personnel</div></div>
+        <div class="project-icon">Sx</div>
+      </div>
+      <p class="project-desc"
+        data-fr="Solution de partage unifiant WiFi et Bluetooth pour des transferts de fichiers fluides à grande distance, sans connexion internet requise."
+        data-en="Sharing solution unifying WiFi and Bluetooth for smooth, long-range file transfers with no internet connection required.">
+        Solution de partage unifiant WiFi et Bluetooth pour des transferts de fichiers fluides à grande distance, sans connexion internet requise.
+      </p>
+      <div class="project-tags"><span class="project-tech">Flutter</span></div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-top">
+        <div><div class="project-title">Scoreboards</div>
+          <div class="project-role" data-fr="Contributrice open source" data-en="Open source contributor">Contributrice open source</div></div>
+        <div class="project-icon">Sc</div>
+      </div>
+      <p class="project-desc"
+        data-fr="Application de suivi des scores de football camerounais. Contributions sur la pagination des services de données, testées contre l'API de staging."
+        data-en="App tracking Cameroonian football scores. Contributed pagination improvements to the data services, each tested against the staging API.">
+        Application de suivi des scores de football camerounais. Contributions sur la pagination des services de données, testées contre l'API de staging.
+      </p>
+      <div class="project-tags"><span class="project-tech">Flutter</span></div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-top">
+        <div><div class="project-title">SANARA AI</div>
+          <div class="project-role" data-fr="Capitaine d'équipe — hackathon" data-en="Team captain — hackathon">Capitaine d'équipe — hackathon</div></div>
+        <div class="project-icon">Sa</div>
+      </div>
+      <p class="project-desc"
+        data-fr="Assistant IA agricole multilingue et offline-first pour les zones rurales d'Afrique, conçu lors de la compétition GCD4F / UNESCO IITE 2026."
+        data-en="Multilingual, offline-first agricultural AI assistant for rural areas, built during the GCD4F / UNESCO IITE 2026 competition.">
+        Assistant IA agricole multilingue et offline-first pour les zones rurales d'Afrique, conçu lors de la compétition GCD4F / UNESCO IITE 2026.
+      </p>
+      <div class="project-tags"><span class="project-tech">IA</span></div>
+    </div>
+
+  </div>
+</section>
+
+<section id="experience">
+  <span class="section-tag reveal" data-fr="Parcours" data-en="Journey">Parcours</span>
+  <h2 class="reveal" data-fr="Expérience" data-en="Experience">Expérience</h2>
+  <div class="glass-card reveal">
+    <div class="timeline">
+      <div class="timeline-item">
+        <span class="timeline-date" data-fr="Juin 2026" data-en="June 2026">Juin 2026</span>
+        <h3 class="timeline-title" data-fr="Stagiaire" data-en="Intern">Stagiaire</h3>
+        <p class="timeline-company">Tesea Incubator</p>
+        <p data-fr="Conception d'interfaces utilisateurs intuitives et développement de solutions technologiques innovantes au sein de l'écosystème de l'incubateur."
+           data-en="Designing intuitive user interfaces and developing innovative technology solutions within the incubator's ecosystem.">
+          Conception d'interfaces utilisateurs intuitives et développement de solutions technologiques innovantes au sein de l'écosystème de l'incubateur.
+        </p>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-date" data-fr="Juin 2025 — Juillet 2025" data-en="June 2025 — July 2025">Juin 2025 — Juillet 2025</span>
+        <h3 class="timeline-title" data-fr="Stagiaire" data-en="Intern">Stagiaire</h3>
+        <p class="timeline-company">Arited</p>
+        <p data-fr="Participation active aux processus de développement et d'optimisation du design pour répondre aux exigences techniques et utilisateurs de l'entreprise, dans le cadre du projet Brixel."
+           data-en="Active participation in development and design-optimization processes to meet the company's technical and user requirements, as part of the Brixel project.">
+          Participation active aux processus de développement et d'optimisation du design pour répondre aux exigences techniques et utilisateurs de l'entreprise, dans le cadre du projet Brixel.
+        </p>
+      </div>
+      <div class="timeline-item">
+        <span class="timeline-date" data-fr="Mai 2024 — Juillet 2024" data-en="May 2024 — July 2024">Mai 2024 — Juillet 2024</span>
+        <h3 class="timeline-title" data-fr="Stagiaire" data-en="Intern">Stagiaire</h3>
+        <p class="timeline-company">Tesea Incubator</p>
+        <p data-fr="Première immersion professionnelle axée sur la pratique du génie logiciel, le prototypage et la compréhension des enjeux d'incubation de projets Tech."
+           data-en="First professional immersion focused on hands-on software engineering, prototyping, and understanding the challenges of incubating tech projects.">
+          Première immersion professionnelle axée sur la pratique du génie logiciel, le prototypage et la compréhension des enjeux d'incubation de projets Tech.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <span class="section-tag reveal" data-fr="Boîte à outils" data-en="Toolbox">Boîte à outils</span>
+  <h2 class="reveal" data-fr="Expertise" data-en="Expertise">Expertise</h2>
+  <p class="skill-category reveal" data-fr="Développement" data-en="Development">Développement</p>
+  <div class="skills-grid reveal">
+    <div class="skill-item">Flutter</div><div class="skill-item">Next.js / React</div>
+    <div class="skill-item">Spring Boot / Java</div><div class="skill-item">Node.js</div>
+    <div class="skill-item">Firebase</div><div class="skill-item">MySQL / SQLite</div>
+  </div>
+  <p class="skill-category reveal" data-fr="Design & Produit" data-en="Design & Product">Design & Produit</p>
+  <div class="skills-grid reveal">
+    <div class="skill-item" data-fr="Design UI/UX" data-en="UI/UX Design">Design UI/UX</div>
+    <div class="skill-item">Figma & Adobe XD</div>
+    <div class="skill-item" data-fr="Prototypage" data-en="Prototyping">Prototypage</div>
+    <div class="skill-item" data-fr="Intégration d'API" data-en="API integration">Intégration d'API</div>
+  </div>
+</section>
+
+<section id="community">
+  <span class="section-tag reveal" data-fr="Engagement" data-en="Involvement">Engagement</span>
+  <h2 class="reveal" data-fr="Communauté Tech" data-en="Tech Community">Communauté Tech</h2>
+  <div class="community-grid">
+    <div class="community-item reveal"><h3>PyCon Cameroon 2026</h3>
+      <p data-fr="Participante et volontaire — Yaoundé, 17–19 sept. 2026" data-en="Attendee and volunteer — Yaoundé, Sept 17–19, 2026">Participante et volontaire — Yaoundé, 17–19 sept. 2026</p></div>
+    <div class="community-item reveal"><h3>GCD4F / UNESCO IITE</h3>
+      <p data-fr="Capitaine d'équipe — projet SANARA AI" data-en="Team captain — SANARA AI project">Capitaine d'équipe — projet SANARA AI</p></div>
+    <div class="community-item reveal"><h3>pawaPay Builders Cameroon</h3>
+      <p data-fr="Participante au hackathon" data-en="Hackathon participant">Participante au hackathon</p></div>
+    <div class="community-item reveal"><h3>HELPCKATON — Women Techmakers</h3>
+      <p data-fr="Participante au hackathon" data-en="Hackathon participant">Participante au hackathon</p></div>
+    <div class="community-item reveal"><h3>AWS Community Day</h3>
+      <p data-fr="Volontaire" data-en="Volunteer">Volontaire</p></div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact-card reveal">
+    <span class="section-tag" data-fr="Contact" data-en="Contact">Contact</span>
+    <h2 data-fr="Travaillons ensemble" data-en="Let's work together">Travaillons ensemble</h2>
+    <p data-fr="Un projet en tête ou une opportunité à me proposer ? N'hésitez pas à me contacter — je réponds rapidement."
+       data-en="Have a project in mind or an opportunity to offer? Feel free to reach out — I respond quickly.">
+      Un projet en tête ou une opportunité à me proposer ? N'hésitez pas à me contacter — je réponds rapidement.
+    </p>
+    <div class="hero-actions">
+      <a href="mailto:susymeli25@gmail.com" class="btn" data-fr="M'envoyer un e-mail" data-en="Send me an email">M'envoyer un e-mail</a>
+      <a href="https://www.linkedin.com/in/susy-meli-976910309/" target="_blank" class="btn-outline">LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-links">
+    <a href="mailto:susymeli25@gmail.com">Email</a>
+    <a href="https://www.linkedin.com/in/susy-meli-976910309/" target="_blank">LinkedIn</a>
+  </div>
+  <p data-fr="© 2026 MELI Susy. Conçu pour impacter." data-en="© 2026 MELI Susy. Built to make an impact.">&copy; 2026 MELI Susy. Conçu pour impacter.</p>
+</footer>
+
+<script>
+// Cursor glow follow (desktop only)
+if (matchMedia('(pointer:fine)').matches) {
+  const glow = document.getElementById('cursorGlow');
+  window.addEventListener('mousemove', e => {
+    glow.style.left = e.clientX + 'px';
+    glow.style.top = e.clientY + 'px';
+  });
+}
+
+// Mobile menu
+const burger = document.getElementById('burger');
+const mobileMenu = document.getElementById('mobileMenu');
+const overlay = document.getElementById('overlay');
+function closeMenu(){ mobileMenu.classList.remove('open'); overlay.classList.remove('open'); }
+burger.addEventListener('click', () => { mobileMenu.classList.toggle('open'); overlay.classList.toggle('open'); });
+overlay.addEventListener('click', closeMenu);
+document.querySelectorAll('.mobile-menu a').forEach(a => a.addEventListener('click', closeMenu));
+
+// Typewriter effect (roles change with language)
+const rolesByLang = {
+  fr: ["Ingénieure Logicielle", "UI/UX Designer", "Développeuse Freelance", "Créatrice de Produits"],
+  en: ["Software Engineer", "UI/UX Designer", "Freelance Developer", "Product Builder"]
+};
+let currentLang = 'fr';
+let roles = rolesByLang.fr;
+const typedEl = document.getElementById('typed');
+let ri = 0, ci = 0, deleting = false, typeTimer = null;
+function typeLoop(){
+  const word = roles[ri] || '';
+  if (!deleting) {
+    ci++;
+    typedEl.textContent = word.slice(0, ci);
+    if (ci === word.length) { deleting = true; typeTimer = setTimeout(typeLoop, 1400); return; }
+  } else {
+    ci--;
+    typedEl.textContent = word.slice(0, ci);
+    if (ci <= 0) { deleting = false; ri = (ri + 1) % roles.length; }
+  }
+  typeTimer = setTimeout(typeLoop, deleting ? 40 : 80);
+}
+typeLoop();
+
+// Language switcher
+const langFrBtn = document.getElementById('langFr');
+const langEnBtn = document.getElementById('langEn');
+function setLang(lang){
+  currentLang = lang;
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-fr]').forEach(el => {
+    const val = lang === 'en' ? el.getAttribute('data-en') : el.getAttribute('data-fr');
+    if (val === null) return;
+    if (el.getAttribute('data-html') === 'true') { el.innerHTML = val; }
+    else { el.textContent = val; }
+  });
+  langFrBtn.classList.toggle('active', lang === 'fr');
+  langEnBtn.classList.toggle('active', lang === 'en');
+  roles = rolesByLang[lang];
+  ri = 0; ci = 0; deleting = false;
+  if (typeTimer) clearTimeout(typeTimer);
+  typeLoop();
+}
+langFrBtn.addEventListener('click', () => setLang('fr'));
+langEnBtn.addEventListener('click', () => setLang('en'));
+
+// Scroll reveal
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('visible'); io.unobserve(en.target); } });
+}, { threshold: 0.15 });
+revealEls.forEach(el => io.observe(el));
+
+// Count-up stats
+const counters = document.querySelectorAll('[data-count]');
+const cio = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (en.isIntersecting) {
+      const el = en.target;
+      const target = parseInt(el.getAttribute('data-count'), 10);
+      let cur = 0;
+      const step = Math.max(1, Math.ceil(target / 30));
+      const timer = setInterval(() => {
+        cur += step;
+        if (cur >= target) { cur = target; clearInterval(timer); }
+        el.textContent = cur;
+      }, 40);
+      cio.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+counters.forEach(el => cio.observe(el));
+
+// Project card tilt
+document.querySelectorAll('.project-card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = e.clientX - r.left, y = e.clientY - r.top;
+    const rx = ((y / r.height) - 0.5) * -8;
+    const ry = ((x / r.width) - 0.5) * 8;
+    card.style.transform = `translateY(-8px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+  });
+  card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+});
+</script>
+</body>
+</html>
